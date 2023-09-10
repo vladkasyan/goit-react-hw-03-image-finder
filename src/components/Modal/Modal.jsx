@@ -1,1 +1,38 @@
-import PropTypes from "prop-types";
+
+import { Component } from 'react';
+
+import { Overlay, Modals } from './Modal.module';
+
+export class Modal extends Component {
+    componentDidMount() {
+        window.addEventListener('keydown', this.pressKey)
+    }
+
+    componentDidUnmount() {
+        window.removeEventListener('keydown', this.pressKey)
+    }
+
+    pressKey = event => {
+        if (event.code === "Escape") {
+            this.props.closeModal()
+        }   
+    }
+
+    handleBackdropClick = ({ target, currentTarget }) => {
+        if (currentTarget === target) {
+            this.props.closeModal();
+        }
+    }
+
+    render() {
+        const { largeImageURL, alt } = this.props;
+        return (
+            <Overlay>
+                <Modals>
+                    <img src={largeImageURL} alt={alt} />
+                </Modals>
+            </Overlay>
+        )
+    }
+
+}

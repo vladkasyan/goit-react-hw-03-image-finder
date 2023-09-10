@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { toast } from 'react-toastify';
 
-import { SearchBar, SearchForm, SearchButton, SearchButtonLabel, SearchInput } from './Searchbar.module';
+import { SearchBars, SearchForm, SearchButton, SearchButtonLabel, SearchInput } from './Searchbar.module';
 
 export default class SearchBar extends Component {
     state = {
@@ -22,28 +22,30 @@ export default class SearchBar extends Component {
         this.setState({searchQuery: ''})
     }
 
-    queryChange = ({currnetTarget : {value} }) => {
-        this.setState({ searchQuery: value.toLowerCase()})
-    }
+    handleQueryChange = ({ currentTarget: { value } }) => {
+        this.setState({ searchQuery: value.toLowerCase() });
+      };
 
     render() {
         const {searchQuery} = this.state
         return (
-            <SearchBar class="searchbar">
-    <SearchForm class="form">
-    <SearchButton type="submit" class="button">
-        <SearchButtonLabel class="button-label">Search</SearchButtonLabel>
+            <SearchBars>
+    <SearchForm onSubmit={this.SubmitForm}>
+    <SearchButton type="submit">
+        <SearchButtonLabel>Search</SearchButtonLabel>
     </SearchButton>
 
     <SearchInput
-        class="input"
         type="text"
         autocomplete="off"
-        autofocus
+        autoFocus
         placeholder="Search images and photos"
+        onChange={this.handleQueryChange}
+        name="searchQuery"
+        value={searchQuery}
     />
     </SearchForm>
-</SearchBar>
+</SearchBars>
         )
     }
 
