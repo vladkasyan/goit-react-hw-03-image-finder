@@ -23,44 +23,22 @@ export class App extends Component {
   }
 
   componentDidUpdate(_, prevState) {
-    const prevQuery = prevState.searchQuery;
-    const nextQuery = this.state.searchQuery;
-    const prevPage = prevState.galleryPage;
-    const nextPage = this.state.galleryPage;
+    const {searchQuery, galleryPage} = this.state
 
-    if (prevQuery !== nextQuery) {
-      this.setState({ galleryPage: 1, galleryItems: [], isButtonShow: false });
-      if (nextPage === 1) {
-        this.fetchGalleryItems(nextQuery, nextPage);
+    if (prevState.searchQuery !== searchQuery || prevState.galleryPage !== galleryPage) {
+      if (galleryPage === 1) {
+        this.fetchGalleryItems(searchQuery, galleryPage);
       }
-    } else if (prevPage !== nextPage) {
-      this.fetchGalleryItems(nextQuery, nextPage);
-    }
+    } 
   }
 
-  fetchGalleryItems = (nextQuery, nextPage) => {
+  fetchGalleryItems = (searchQuery, galleryPage) => {
     this.setState({ loading: true, error: false });
 
-    postApiService.query = nextQuery;
-    postApiService.page = nextPage;
 
-    postApiService.fetchPost().then(data => {
+    postApiService.fetchPost(searchQuery, galleryPage).then(data => {
       postApiService.hits = data.totalHits;
-
-      const newData = data.hits.map(
-        ({ id, alt, webURL, largeImageURL }) => ({
-          id,
-          alt,
-          webURL,
-          largeImageURL,
-        })
-      );
-      const currentData = [...this.state.galleryItems, ...newData];
-
-      this.setState(prevState => ({
-        galleryItems: [...prevState.galleryItems, ...newData],
-      }));
-
+      
       if (!data.totalHits) {
         this.setState({ loading: false, error: true });
         return toast.warn(
@@ -68,7 +46,20 @@ export class App extends Component {
         );
       }
 
-      if (currentData.length >= data.totalHits) {
+      const newData = data.hits.map(
+        ({ id, tags, webformatURL, largeImageURL }) => ({
+          id,
+          tags,
+          webformatURL,
+          largeImageURL,
+        })
+      );
+
+      this.setState(prevState => ({
+        galleryItems: [...prevState.galleryItems, ...newData],
+      }));
+      
+      if (this.state.galleryPage >= Math.ceil(data.totalHits / 12)) {
         this.setState({
           loading: false,
           isButtonShow: false,
@@ -77,16 +68,18 @@ export class App extends Component {
         return;
       }
 
-      if (nextPage === 1) {
+      if (galleryPage === 1) {
         toast.success(`We found ${postApiService.hits} images.`);
       }
 
+      
+    }).finally(
       this.setState({
         loading: false,
         isButtonShow: true,
         error: false,
-      });
-    });
+      })
+    )
   };
 
   formSubmit = searchQuery => {

@@ -4,11 +4,7 @@ const BASE_URL = 'https://pixabay.com/api/';
 const API_KEY = '31107721-7ee60bad5b686af5fdf0a833c';
 
 export default class PostsApiService {
-  constructor() {
-    this.searchQuery = '';
-    this.page = 1;
-    this.totalHits = 0;
-  }
+
 
   async fetchPost() {
     const OPTIONS = new URLSearchParams({

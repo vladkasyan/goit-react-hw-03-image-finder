@@ -14,18 +14,18 @@ export class ImageGalleryItem extends Component {
 
     render() {
         const {
-            galleryItem: { webURL, largeImageURL, alt },
+            galleryItem: { webformatURL, largeImageURL, tags },
         } = this.props;
 
         return(
         <>
             <ImageGaleryItem onClick={this.toggleModal}>
-                <ImgGallery src={webURL} alt={alt} />
+                <ImgGallery src={webformatURL} alt={tags} />
             </ImageGaleryItem>
                 {this.state.isModalOpen && (
                     <Modal
                     largeImageURL={largeImageURL}
-                    alt={alt}
+                    alt={tags}
                     closeModal={this.toggleModal}
                     />
             )}

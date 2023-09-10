@@ -19,7 +19,8 @@ export default class SearchBar extends Component {
         }
 
         this.props.onSubmit(searchQuery);
-        this.setState({searchQuery: ''})
+    
+        this.setState({ searchQuery: '', galleryPage: 1, galleryItems: [], isButtonShow: false });
     }
 
     handleQueryChange = ({ currentTarget: { value } }) => {
