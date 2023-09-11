@@ -19,7 +19,7 @@ export class App extends Component {
 
     loading: false,
     isButtonShow: false,
-    error: true,
+    error: false,
   }
 
   componentDidUpdate(_, prevState) {
@@ -76,7 +76,7 @@ export class App extends Component {
 
   formSubmit = searchQuery => {
     this.setState({ 
-      searchQuery: ``,
+      searchQuery,
       galleryItems: [],
       galleryPage: 1,
       
@@ -100,7 +100,7 @@ export class App extends Component {
         <Searchbar onSubmit={this.formSubmit} />
 
         {error && <h2>Please, enter search word!</h2>}
-        {!error && <ImageGallery galleryItems={galleryItems} />}
+        {galleryItems.length > 0 && <ImageGallery galleryItems={galleryItems} />}
         {loading && <Loader />}
         {isButtonShow && <Button onClick={this.onLoadMore} />}
         <ToastContainer autoClose={3000} theme="dark" />
