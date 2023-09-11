@@ -6,47 +6,24 @@ const API_KEY = '31107721-7ee60bad5b686af5fdf0a833c';
 export default class PostsApiService {
 
 
-  async fetchPost() {
+  async fetchPost(searchQuery, page) {
     const OPTIONS = new URLSearchParams({
       key: API_KEY,
-      q: this.searchQuery,
+      q: searchQuery,
       image_type: 'photo',
       orientation: 'horizontal',
       safesearch: true,
-      page: this.page,
+      page: page,
       per_page: 12,
     });
 
     try {
       const response = await axios.get(`${BASE_URL}?${OPTIONS.toString()}`);
-      this.incrementPage();
       return response.data;
     } catch (error) {
       console.error(error.toJSON());
     }
   }
 
-  get query() {
-    return this.searchQuery;
-  }
-
-  set query(newQuery) {
-    this.searchQuery = newQuery;
-  }
-
-  get hits() {
-    return this.totalHits;
-  }
-
-  set hits(newTotalHits) {
-    this.totalHits = newTotalHits;
-  }
-
-  incrementPage() {
-    this.page += 1;
-  }
-
-  resetPage() {
-    this.page = 1;
-  }
+ 
 }

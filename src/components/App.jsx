@@ -26,9 +26,7 @@ export class App extends Component {
     const {searchQuery, galleryPage} = this.state
 
     if (prevState.searchQuery !== searchQuery || prevState.galleryPage !== galleryPage) {
-      if (galleryPage === 1) {
         this.fetchGalleryItems(searchQuery, galleryPage);
-      }
     } 
   }
 
@@ -37,7 +35,6 @@ export class App extends Component {
 
 
     postApiService.fetchPost(searchQuery, galleryPage).then(data => {
-      postApiService.hits = data.totalHits;
       
       if (!data.totalHits) {
         this.setState({ loading: false, error: true });
@@ -57,12 +54,11 @@ export class App extends Component {
 
       this.setState(prevState => ({
         galleryItems: [...prevState.galleryItems, ...newData],
+        isButtonShow: this.state.galleryPage >= Math.ceil(data.totalHits / 12)
       }));
       
       if (this.state.galleryPage >= Math.ceil(data.totalHits / 12)) {
         this.setState({
-          loading: false,
-          isButtonShow: false,
           error: false,
         });
         return;
@@ -83,7 +79,15 @@ export class App extends Component {
   };
 
   formSubmit = searchQuery => {
-    this.setState({ searchQuery });
+    this.setState({ 
+      searchQuery: ``,
+      galleryItems: [],
+      galleryPage: 1,
+      
+      loading: false,
+      isButtonShow: false,
+      error: true,
+     });
   };
 
   onLoadMore = () => {
