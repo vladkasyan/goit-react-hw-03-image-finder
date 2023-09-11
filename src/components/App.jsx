@@ -59,11 +59,6 @@ export class App extends Component {
       }))
       
      
-
-      if (galleryPage === 1) {
-        toast.success(`We found ${postApiService.hits} images.`);
-      }
-
       
     }).finally(
       this.setState({
