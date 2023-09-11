@@ -54,15 +54,11 @@ export class App extends Component {
 
       this.setState(prevState => ({
         galleryItems: [...prevState.galleryItems, ...newData],
-        isButtonShow: this.state.galleryPage >= Math.ceil(data.totalHits / 12)
-      }));
+        isButtonShow:  (galleryPage <= Math.ceil(data.totalHits / 12)),
+        error: false,
+      }))
       
-      if (this.state.galleryPage >= Math.ceil(data.totalHits / 12)) {
-        this.setState({
-          error: false,
-        });
-        return;
-      }
+     
 
       if (galleryPage === 1) {
         toast.success(`We found ${postApiService.hits} images.`);
