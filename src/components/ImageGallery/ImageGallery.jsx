@@ -1,15 +1,15 @@
-import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem'
+import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 
 import { ImageGallerys } from '../ImageGallery/ImageGallery.module';
 
-export const ImageGallery = ({galleryItems}) => {
-    return (
-        <ImageGallerys>
-            {galleryItems.map(galleryItem => {
+export const ImageGallery = ({ galleryItems }) => {
+  return (
+    <ImageGallerys>
+      {galleryItems.map(galleryItem => {
         return (
-            <ImageGalleryItem key={galleryItem.id} galleryItem={galleryItem} />
+          <ImageGalleryItem key={galleryItem.id} galleryItem={galleryItem} />
         );
-        })}  
-        </ImageGallerys>
-    )
-}
+      })}
+    </ImageGallerys>
+  );
+};
